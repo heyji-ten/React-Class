@@ -5,6 +5,8 @@ import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button } from '
 
 import Data from './data.js';
 
+import { Link, Route, Switch } from 'react-router-dom';
+
 function App() {
 
   let [shoes, shoes변경] = useState(Data);
@@ -58,6 +60,13 @@ function App() {
     <Button variant="primary">Learn more</Button>
   </p>
 </div>
+
+<Route path="/">
+  <div>메인페이지</div>
+</Route>
+<Route path="/detail">
+  <div>디테일 페이지</div>
+</Route>
 
 <div className="container">
   <div className="row">
