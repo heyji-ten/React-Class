@@ -4,6 +4,7 @@ import './App.css';
 import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 
 import Data from './data.js';
+import Detail from './Detail.js';
 
 import { Link, Route, Switch } from 'react-router-dom';
 
@@ -23,8 +24,8 @@ function App() {
         style={{ maxHeight: '100px' }}
         navbarScroll
       >
-        <Nav.Link href="#action1">Home</Nav.Link>
-        <Nav.Link href="#action2">Link</Nav.Link>
+        <Nav.Link><Link to="/">Home</Link></Nav.Link>
+        <Nav.Link><Link to="/detail">Detail</Link></Nav.Link>
         <NavDropdown title="Link" id="navbarScrollingDropdown">
           <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
           <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
@@ -50,49 +51,49 @@ function App() {
   </Container>
 </Navbar>
 
-<Route exact path="/">
-  <div className="background hei">
-    <h1>20% Season off</h1>
-    <p>
-      This is a simple hero unit, a simple jumbotron-style component for calling
-      extra attention to featured content or information.
-    </p>
-    <p>
-      <Button variant="primary">Learn more</Button>
-    </p>
-  </div>
 
-  <div className="container">
-    <div className="row">
-      {
-        shoes.map((a,i)=>{
-          return <Products shoes={shoes[i]} i={i} key={i} />
-        })
-      }
+<Switch>
+
+  <Route exact path="/">
+    <div className="background hei">
+      <h1>20% Season off</h1>
+      <p>
+        This is a simple hero unit, a simple jumbotron-style component for calling
+        extra attention to featured content or information.
+      </p>
+      <p>
+        <Button variant="primary">Learn more</Button>
+      </p>
     </div>
-  </div>
-</Route>
-<Route path="/detail">
-  <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
-          </div>
-          <div className="col-md-6 mt-4">
-            <h4 className="pt-5">상품명</h4>
-            <p>상품설명</p>
-            <p>120000원</p>
-            <button className="btn btn-danger">주문하기</button> 
-          </div>
-        </div>
-  </div> 
-</Route>
+
+    <div className="container">
+      <div className="row">
+        {
+          shoes.map((a,i)=>{
+            return <Products shoes={shoes[i]} i={i} key={i} />
+          })
+        }
+      </div>
+    </div>
+  </Route>
+
+  <Route path="/detail/:id">
+    <Detail shoes={shoes}/>
+  </Route>
+
+  <Route path="/:id">
+    <div>아무거나 적었을때 이거 보여줌</div>
+  </Route>
+
+</Switch>
 
 {/* <Route path="/어쩌구" component={Modal}></Route> */}
 
     </div>
   );
 }
+
+
 
 function Products(props) {
   return (
