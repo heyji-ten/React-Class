@@ -5,12 +5,14 @@ import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button } from '
 
 import Data from './data.js';
 import Detail from './Detail.js';
+import axios from 'axios';
 
 import { Link, Route, Switch } from 'react-router-dom';
 
 function App() {
 
   let [shoes, shoes변경] = useState(Data);
+  let [재고, 재고변경] = useState([10,11,12]); //중요데이터는 App.js에 저장할것
 
   return (
     <div className="App">
@@ -24,8 +26,8 @@ function App() {
         style={{ maxHeight: '100px' }}
         navbarScroll
       >
-        <Nav.Link><Link to="/">Home</Link></Nav.Link>
-        <Nav.Link><Link to="/detail">Detail</Link></Nav.Link>
+        <Nav.Link as={Link} to="/">Home</Nav.Link>
+        <Nav.Link as={Link} to="/detail">Detail</Nav.Link>
         <NavDropdown title="Link" id="navbarScrollingDropdown">
           <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
           <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
@@ -74,11 +76,32 @@ function App() {
           })
         }
       </div>
+      <button className='btn btn-primary' onClick={() => { 
+
+        // axios.post('서버url',{ id : 'codingapple', pw : 1234 }); //서버에 데이터를 보내는 법
+
+        // 로딩중이라는 UI 띄움
+
+        axios.get('https://codingapple1.github.io/shop/data2.json') //새로고침 없이 데이터를 가져옴
+        .then((result) => {
+
+          // 로딩중이라는 UI 안보이게 처리
+
+          console.log(result.data);
+          shoes변경( [...shoes, ...result.data] ); //...연산자는 {}괄호를 벗겨줍니다. 카피본 만든것임.
+        }) // 데이터 요청이 성공했을 때 실행함
+        .catch(() => {
+          // 로딩중이라는 UI 안보이게 처리
+
+          console.log('실패')
+        }) //데이터 요청이 실패했을 때 실행함
+
+      }}>더보기</button>
     </div>
   </Route>
 
   <Route path="/detail/:id">
-    <Detail shoes={shoes}/>
+    <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}/>
   </Route>
 
   <Route path="/:id">
