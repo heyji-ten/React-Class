@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
@@ -8,6 +8,8 @@ import Detail from './Detail.js';
 import axios from 'axios';
 
 import { Link, Route, Switch } from 'react-router-dom';
+
+export let 재고context = React.createContext(); //같은 변수값을 공유할 범위 생성
 
 function App() {
 
@@ -69,6 +71,9 @@ function App() {
     </div>
 
     <div className="container">
+
+      <재고context.Provider value={재고}> {/* 값 공유를 원하는 HTMl들을 <범위.Provider>로 감싸고 value={공유원하는값} */}
+
       <div className="row">
         {
           shoes.map((a,i)=>{
@@ -76,6 +81,9 @@ function App() {
           })
         }
       </div>
+
+      </재고context.Provider>
+
       <button className='btn btn-primary' onClick={() => { 
 
         // axios.post('서버url',{ id : 'codingapple', pw : 1234 }); //서버에 데이터를 보내는 법
@@ -100,9 +108,13 @@ function App() {
     </div>
   </Route>
 
+  <재고context.Provider value={재고}> 
+
   <Route path="/detail/:id">
     <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}/>
   </Route>
+  
+  </재고context.Provider> 
 
   <Route path="/:id">
     <div>아무거나 적었을때 이거 보여줌</div>
@@ -119,13 +131,35 @@ function App() {
 
 
 function Products(props) {
+
+  let 재고 = useContext(재고context);
+
   return (
     <div className="col-md-4">
       <img src={ 'https://codingapple1.github.io/shop/shoes' + (props.i+1) + '.jpg' } width="100%"/>
       <h4>{ props.shoes.title }</h4>
       <p>{ props.shoes.content } & { props.shoes.price }</p>
+
+      {/* props 대신 context를 쓰자
+      - 하위 컴포넌트들이 props 없이도 부모의 값을 사용가능
+      1. React.createContext()로 범위생성
+      2. 같은 값을 공유할 HTML을 범위로 싸매기 ex. <재고context.Provider value={재고}>
+      3. useContext(범위이름)로 공유된 값 사용하기 
+      ---------
+      * 간단한 데이터 전송은 간단한 props를 쓰자
+      * 컴포넌트가 많을 때 사용하기 좋음 */}
+
+      <Test />
+
     </div>
   )
+}
+
+function Test() {
+
+  let 재고 = useContext(재고context);
+
+  return <p>재고 : {재고[0]}</p>
 }
 
 export default App;
