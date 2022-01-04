@@ -1,8 +1,11 @@
 import axios from 'axios';
 import React, {useEffect, useState, useContext} from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import './Detail.scss';
+
+import {CSSTransition} from "react-transition-group";
 
 import {재고context} from './App.js';
 
@@ -36,6 +39,10 @@ function Detail(props){
 
     let [alert, alert변경] = useState(true);
     let [inputData, inputData변경] = useState('');
+
+    let [누른탭, 누른탭변경] = useState(0);
+
+    let [스위치, 스위치변경] = useState(false);
 
     let 재고 = useContext(재고context);
 
@@ -97,8 +104,42 @@ function Detail(props){
                     }}>뒤로가기</button> 
                 </div>
             </div>
+
+            <Nav className='mt-5' variant="tabs" defaultActiveKey="link-0">
+                <Nav.Item>
+                    <Nav.Link eventKey="link-0" onClick= { ()=>{ 스위치변경(false); 누른탭변경(0) } }>Active</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="link-1" onClick= { ()=>{ 스위치변경(false); 누른탭변경(1) } }>Option 2</Nav.Link>
+                </Nav.Item>
+            </Nav>
+
+            {/* 애니메이션
+            in : 애니메이션 켜는 스위치 (true면 동작함) - 변수나 state로 저장해서 쓰자
+            classNames : 애니메이션 이름 (작명) - class로 애니메이션 넣기
+            timeout : 애니메이션 동작 시간 */}
+            <CSSTransition in={스위치} classNames="wow" timeout={500}>
+            <TabContent 누른탭={누른탭} 스위치변경={스위치변경}/>
+            </CSSTransition>
+
         </div> 
     )
+}
+
+// if문
+function TabContent(props) {
+
+    useEffect(()=>{
+        props.스위치변경(true);
+    });
+
+    if (props.누른탭 === 0) {
+        return <div>0번째 내용입니다</div>
+    } else if (props.누른탭 === 1) {
+        return <div>1번째 내용입니다</div>
+    } else if(props.누른탭 === 2){
+        return <div>2번째 내용입니다</div>
+    }
 }
 
 //하위의 하위 props 하는 법
