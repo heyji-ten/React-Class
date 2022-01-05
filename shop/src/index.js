@@ -6,10 +6,54 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter } from 'react-router-dom';
 
+import {Provider} from 'react-redux';
+import { combineReducers, createStore } from 'redux';
+
+let alert초기값 = true;
+
+function reducer2(state = alert초기값, 액션) {
+  if (액션.type === 'alert닫기') {
+    return state = false;
+    return state;
+  } else {
+    return state
+  }
+}
+
+
+let 초기값 = [
+  { id : 0, name : '멋진신발', quan : 2 }, 
+  { id : 1, name : '멋진코트', quan : 3 }
+];
+
+// redux에선 state 데이터의 수정방법을 미리 정의 해야함.
+function reducer(state = 초기값, 액션) {
+  if ( 액션.type === '수량증가' ){
+
+    let copy = [...state];
+    copy[0].quan++;
+    return copy
+
+  } else if ( 액션.type === '수량감소' ){
+
+    let copy = [...state];
+    copy[0].quan--;
+    return copy
+
+  } else {
+    return state
+  }
+}
+
+
+let store = createStore(combineReducers({reducer, reducer2}));
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-    <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

@@ -9,6 +9,8 @@ import axios from 'axios';
 
 import { Link, Route, Switch } from 'react-router-dom';
 
+import Cart from './Cart.js';
+
 export let 재고context = React.createContext(); //같은 변수값을 공유할 범위 생성
 
 function App() {
@@ -113,6 +115,13 @@ function App() {
   <Route path="/detail/:id">
     <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}/>
   </Route>
+
+  <Route path="/cart">
+      <Cart></Cart>
+  </Route>
+
+  {/* redux 쓰는 이유
+  1. props 없이 모든 컴포넌트가 state를 갖다쓰기 가능 */}
   
   </재고context.Provider> 
 
