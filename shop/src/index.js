@@ -46,6 +46,7 @@ function reducer(state = 초기값, 액션) {
       
     }
 
+
   } else if ( 액션.type === '수량증가' ){
 
     let copy = [...state];
