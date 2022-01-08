@@ -1,15 +1,22 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, lazy, Suspense} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 
 import Data from './data.js';
-import Detail from './Detail.js';
 import axios from 'axios';
+import Cart from './Cart.js';
 
 import { Link, Route, Switch, useHistory } from 'react-router-dom';
+// import Detail from './Detail.js';
 
-import Cart from './Cart.js';
+// 컴포넌트 import 할 때 lazy loading 하기
+let Detail = lazy(()=>{ return import('./Detail.js') }); //Detail 을 보여줄 때만 import 해옴
+
+
+
+
+
 
 export let 재고context = React.createContext(); //같은 변수값을 공유할 범위 생성
 
@@ -113,7 +120,9 @@ function App() {
   <재고context.Provider value={재고}> 
 
   <Route path="/detail/:id">
-    <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}/>
+    <Suspense fallback={ <div>로딩중입니다~!</div> }>
+      <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}/>
+    </Suspense>
   </Route>
 
   <Route path="/cart">
