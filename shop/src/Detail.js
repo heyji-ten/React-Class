@@ -38,6 +38,7 @@ let 제목 = styled.h4`
 
 function Detail(props){
 
+
     let [alert, alert변경] = useState(true);
     let [inputData, inputData변경] = useState('');
 
@@ -67,6 +68,19 @@ function Detail(props){
     let 찾은상품 = props.shoes.find(function(상품){
         return 상품.id == id
     });
+
+
+    useEffect( ()=>{
+        var arr = localStorage.getItem('watched');
+        if ( arr == null ) { arr = [] } else { arr = JSON.parse(arr); }
+
+        arr.push(id);
+        arr = new Set(arr);
+        arr = [...arr];
+
+        localStorage.setItem('watched', JSON.stringify(arr) );
+    },[] )
+
 
     return(
         <div className="container">
